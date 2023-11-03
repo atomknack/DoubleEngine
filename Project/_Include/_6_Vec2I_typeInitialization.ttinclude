@@ -1,0 +1,16 @@
+﻿<#
+typeName = "Vec2I"; 
+fieldNames = new[]{"x","y"};
+
+//string inModifier = "";//string inModifier = "in ";
+inMod = "in ";
+b = new Basic("int", "Int", "", "");
+/*basicType = "double";
+basicCapital = "Double";
+toBasicType = "";
+basicTypeValueEnding = "d";*/
+
+defaultValues = new[]{"0","0"};
+
+SaveCurrentTypeDescription();
+#>

@@ -1,0 +1,15 @@
+﻿<# 
+string typeName = "EverGrowingRegistryEnchanced<T,TConverted>";
+string constructorName = "EverGrowingRegistryEnchanced";
+bool generic = true;
+bool enchanced = true;
+
+string additionalUsings = "";
+string additionalMembers = "";
+
+string TName = "T";
+string TConverted = "TConverted";
+//bool canAddConverted = false;
+
+string dictionaryConstructor = "new()";
+#>

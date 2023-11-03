@@ -1,0 +1,82 @@
+<#@ template language="C#" hostspecific="True"#>
+<#@ output extension=".gen.cs" #>
+<#@ include file="$(ProjectDir)\_Include\_0_AssemplyImports.ttinclude" #>
+
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<#@ include file="$(ProjectDir)\_Include\_1_ManagerMultipleOutputHelper.ttinclude"#>
+<#@ include file="$(ProjectDir)\_Include\_2_GlobalTTInclude.ttinclude" #>
+<#@ include file="$(ProjectDir)\_Include\_4_typeDeclaration.ttinclude" #>
+
+<# FileInfo t4FileInfo = new FileInfo( this.Host.TemplateFile );#>
+//// this file was generated as byproduct of generating *.gen.cs files from master template: <#=t4FileInfo.Name#>
+
+<# var manager = Manager.Create(Host, GenerationEnvironment); #>
+<# 
+
+(string typeName, string basicType, string baseValueAccessor)[] typesArr= 
+    new []{
+    ("EdgeIndexed", "int", ""),
+    ("EdgeRegistered", "RegistryIndex", ".Value"),
+    };
+
+for (var k = 0; k < typesArr.Length; k++)
+{
+    string typeName = typesArr[k].typeName;
+    string basicType = typesArr[k].basicType;
+    string accessor = typesArr[k].baseValueAccessor;
+
+    string filename = $"{typeName}.gen.cs";
+    WriteLine($"//// Generating: {filename}");
+    manager.StartNewFile(filename); #>
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+
+namespace DoubleEngine
+{
+
+    public readonly partial struct <#=typeName#>: IEquatable<<#=typeName#>>
+    {
+        public readonly <#=basicType#> start;
+        public readonly <#=basicType#> end;
+
+        public readonly override string ToString() => $"<#=typeName#>({start<#=accessor#>}, {end<#=accessor#>})";
+
+        public readonly bool Equals(<#=typeName#> other) => other.start == start && other.end == end;
+        public static bool operator !=(<#=typeName#> lhs, <#=typeName#> rhs) => !(lhs == rhs);
+        public static bool operator ==(<#=typeName#> lhs, <#=typeName#> rhs) => Equals(lhs, rhs);
+        public readonly override int GetHashCode() => (start<#=accessor#>  << 11) ^ end<#=accessor#> ;
+        public readonly override bool Equals(object other) => (other is <#=typeName#>) ? Equals((<#=typeName#>)other) : false;
+
+        public <#=typeName#>((<#=basicType#> a, <#=basicType#> b) edge) : this(edge.a, edge.b) { }
+        [JsonConstructor]
+        public <#=typeName#>(<#=basicType#> start, <#=basicType#> end)
+        {
+            if (start == end)
+                throw new ArgumentException("start and end indices of edge should not be equal");
+            this.start = start;
+            this.end = end;
+        }
+
+        //public EdgeVec2D ToEdgeVec2D(ROSpanVec2D vertices) => new EdgeVec2D(vertices[start], vertices[end]);
+
+        public readonly <#=typeName#> Backwards() => new <#=typeName#>(end, start);
+
+        public static void ReverseEdgesDirectionInplace(Span<<#=typeName#>> edges)
+        {
+            for (int i = 0; i < edges.Length; i++)
+                edges[i] = edges[i].Backwards();
+        }
+
+        //public double RelationToEdge(ROSpanVec2D vertices, Vec2D point) => //Vector2dUtil.CrossLike(source[start] - point, source[end] - point);
+        //                EdgeVec2D.Relation(vertices[start], vertices[end], point);
+    }
+
+}
+<#  manager.EndBlock();
+    } #>
+<# manager.Process(true); #>

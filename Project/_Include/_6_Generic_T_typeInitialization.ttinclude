@@ -1,0 +1,11 @@
+﻿<#@ include file="_5_mathFuncs_Double_Initialization.ttinclude" #>
+<#
+typeName = "T"; 
+fieldNames = null;
+
+inMod = "";
+b = null;
+defaultValues = null;
+
+SaveCurrentTypeDescription();
+#>

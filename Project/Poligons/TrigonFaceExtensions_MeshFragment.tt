@@ -1,0 +1,71 @@
+<#@ template language="C#" hostspecific="True"#>
+<#@ output extension=".gen.cs" #>
+
+//this file was generated
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+
+namespace DoubleEngine
+{
+
+public static class TrigonExtensions_MeshFragment
+    {
+
+<# 
+string[] v2Names = 
+{
+//"Vector2",
+"Vec2D"
+}; 
+string[] v3Names = 
+{
+//"Vector3",
+"Vec3D"
+};
+
+for(var i = 0; i<v2Names.Length; i++)
+{
+    string v2 = v2Names[i]; 
+    string v3 = v3Names[i];
+#>
+
+    //    public static bool IsTriangleClockwise(this Tri<#=v2#> face)
+    //        => Vector2dUtil.IsTriangleClockwise(face.v0, face.v1, face.v2);
+    /*
+    public static IEnumerable<Tri<#=v3#>> Tris(this MeshFragment<#=v3#> mesh)
+    {
+        for (int i = 0; i < mesh.triangles.Length; i += 3)
+            yield return new Tri<#=v3#>(mesh.vertices[mesh.triangles[i]], mesh.vertices[mesh.triangles[i + 1]], mesh.vertices[mesh.triangles[i + 2]]);
+    }
+    */
+    public static IEnumerable<Tri<#=v3#>> Tris(this IEnumerable<MeshFragment<#=v3#>> meshes)
+    {
+        foreach (var mesh in meshes)
+            foreach (var tri in mesh.Tris())//(var face in Faces(mesh))
+                yield return tri;
+    }
+
+    public static IEnumerable<Tri<#=v2#>> ConvertFaces_<#=v3#>To<#=v2#>(this IEnumerable<Tri<#=v3#>> faces)
+    {
+        foreach (var face in faces)
+            yield return face.ToTri<#=v2#>();
+    }
+
+    [Obsolete("Need testing")]
+    public static Tri<#=v3#>[] FacesArray(this MeshFragment<#=v3#> mesh)
+    {
+        <#=v3#>[] vs = mesh.vertices;
+        int[] tris = mesh.triangles;
+            Tri<#=v3#>[] result = new Tri<#=v3#>[tris.Length / 3];
+        for ((int f, int tr) = (0,0); f < result.Length; f++, tr+=3)
+            result[f] = new Tri<#=v3#>( vs[tris[tr]],  vs[tris[tr+1]], vs[tris[tr+2]]);
+        return result;
+    } 
+
+<# } #>
+
+    }
+}

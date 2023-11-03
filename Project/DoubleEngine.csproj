@@ -1,0 +1,602 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProjectGuid>{D8B71AE8-5183-47DD-A314-813F69AB2F68}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>DoubleEngine</RootNamespace>
+		<AssemblyName>DoubleEngine</AssemblyName>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+		<LangVersion>latest</LangVersion>
+		<TargetFrameworkProfile />
+		<Configurations>Debug;Release;Testing;AtomKnackRelease</Configurations>
+	</PropertyGroup>
+    	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AtomKnackRelease|AnyCPU' ">
+		<DebugSymbols>false</DebugSymbols>
+        <DebugType>None</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>..\bin\AtomKnackRelease\</OutputPath>
+		<DefineConstants>NETWORK</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>..\bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;NETWORK;INHOUSE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>..\bin\Release\</OutputPath>
+		<DefineConstants>TRACE;NETWORK</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|AnyCPU' ">
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>..\bin\Testing\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;NETWORK;TESTING;INHOUSE;ZEROLENGTHVECTORCHECKS;TREELIKE3D</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<ItemGroup>
+		<EmbeddedResource Remove="VectorLike_ExtensionMethods\**" />
+		<EmbeddedResource Remove="VectorUtil\**" />
+		<None Remove="*.meta" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="**\*.meta" />
+		<None Remove="VectorLike_ExtensionMethods\**" />
+		<None Remove="VectorUtil\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+	</ItemGroup>
+
+	<Choose>
+		<When Condition="$([System.Text.RegularExpressions.Regex]::IsMatch(&#xD;&#xA;				 $(DefineConstants), '^(.*;)*TREELIKE3D(;.*)*$'))">
+			<!-- When TREELIKE3D is defined. -->
+			<ItemGroup>
+				<Compile Include="TreeLike\*.cs" />
+			</ItemGroup>
+		</When>
+		<!-- other when conditions can be here -->
+	</Choose>
+
+	<ItemGroup>
+		<None Include="packages.config" />
+		<Compile Include="AtomEvents\AtomEvent.cs" />
+		<Compile Include="AtomEvents\AtomEventGeneric.cs" />
+		<Compile Include="AtomEvents\AtomEventBindedWithStoredValue.cs" />
+		<Compile Include="AtomEvents\AtomEventWithStoredValue.cs" />
+		<Compile Include="AtomEvents\IAtomEvent.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaderBG33.cs" />
+		<Compile Include="Atom\Loaders\EncodersTB.cs" />
+		<Compile Include="Atom\Loaders\Simplefied7z.cs" />
+		<Compile Include="Atom\Loaders\VariableLengthEncoder.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Atom\Multithreading\ICondition.cs" />
+		<Compile Include="Atom\Multithreading\IWorker.cs" />
+		<Compile Include="Atom\Multithreading\AbstractOverlord.cs" />
+		<Compile Include="Atom\Multithreading\SimpleBoolCondition.cs" />
+		<Compile Include="Atom\Chunker\SpaceCell.cs" />
+		<Compile Include="Atom\Chunker\theory_old_ThreeDimensionalChunker.cs" />
+		<Compile Include="Atom\Multithreading\AbstractOverlord.AbstractWorker.cs" />
+		<Compile Include="Atom\Chunker\theory_old_ThreeDimensionalChunker_Worker.cs" />
+		<Compile Include="Atom\Chunker\BuildedChunk.cs" />
+		<Compile Include="Atom\Chunker\ThreeDimensionalChunker_BuildFullMesh.cs" />
+		<Compile Include="Atom\Chunker\ThreeDimensionalChunker_testing.cs" />
+		<Compile Include="Atom\Chunker\ThreeDimensionalChunker.cs" />
+		<Compile Include="Atom\Chunker\ThreeDimensionalChunker.Worker.cs" />
+		<Compile Include="Atom\Multithreading\WorkersCountRunner.cs" />
+		<Compile Include="Atom\Multithreading\WorkersConditionRunner.cs" />
+		<Compile Include="Atom\Loaders\EngineLoader.cs" />
+		<Compile Include="Atom\Loaders\IEngineLoader.cs" />
+		<Compile Include="Atom\Loaders\LoaderFromFiles.cs" />
+		<Compile Include="Atom\CubeMeshes\CubeSides.cs" />
+		<Compile Include="Atom\Angles\PerpendicularRotation3.cs" />
+		<Compile Include="Atom\Angles\ScaleInversionV3.cs" />
+		<Compile Include="Atom\CollisionDiscrete2D\OverlapPoint.cs" />
+		<Compile Include="Atom\CollisionDiscrete2D\PointInsidePolygon.cs" />
+		<Compile Include="Atom\CollisionDiscrete2D\Raycast.cs" />
+		<Compile Include="Atom\Angles\AngleMethods.cs" />
+		<Compile Include="Atom\CubeMeshes\Grid6SidesCached_TransformBy.cs" />
+		<Compile Include="Atom\Decimator\DecimatorColored.cs" />
+		<Compile Include="Atom\Decimator\Decimator3D.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNodesComplimentaryMatcher.cs" />
+		<Compile Include="Atom\CubeMeshes\Grid6Sides.cs" />
+		<Compile Include="Atom\CubeMeshes\Grid6SidesCached.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNodes_Filters.cs" />
+		<Compile Include="Atom\GridLoader\Deprecated_GridLoader.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaderBase.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaders.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaderTextStream.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaderBinary.cs" />
+		<Compile Include="Atom\GridLoader\GridLoaderCommand.cs" />
+		<Compile Include="Atom\GridLoader\IGridStreamLoader.cs" />
+		<Compile Include="Atom\InternalLayeredBuilderWithMaterials.cs" />
+		<Compile Include="Atom\InternalLayeredBuilderWithMaterials_LayerWithMaterials.cs" />
+		<Compile Include="Atom\InternalLayeredBuilder_Layer.cs" />
+		<Compile Include="Atom\IThreeDimensionalGrid.cs" />
+		<Compile Include="Atom\Materials\ColorRGBA32.cs" />
+		<Compile Include="Atom\Materials\DEMaterial.cs" />
+		<Compile Include="Atom\Materials\DEMaterials.cs" />
+		<Compile Include="Atom\ThreeDimensionalGridOffsetter.cs" />
+		<Compile Include="Atom\ThreeDimensionalCell_Network.cs" />
+		<Compile Include="Atom\ThreeDimensionalBuilder.cs" />
+		<Compile Include="Atom\ThreeDimensionalGrid.cs" />
+		<Compile Include="Atom\ThreeDimensionalCellMeshes_Json.cs" />
+		<Compile Include="Atom\ThreeDimensionalCellMeshes.cs" />
+		<Compile Include="Atom\ThreeDimensionalGridNaiveCounter.cs" />
+		<Compile Include="Atom\ThreeDimensionalGridBase.cs" />
+		<Compile Include="Atom\ThreeDimensionalCell.cs" />
+		<Compile Include="Atom\Old\GridMesh.cs" />
+		<Compile Include="Atom\CubeMeshes\GridSide.cs" />
+		<Compile Include="Atom\CubeMeshes\DeshelledCubeMesh.cs" />
+		<Compile Include="Atom\CubeMeshes\IntactCubeMesh.cs" />
+		<Compile Include="Atom\CubeMeshes\ISerializableCubeMesh.cs" />
+		<Compile Include="Atom\ThreeDimensionalGrid_WithLayeredBuilder.cs" />
+		<Compile Include="Atom\ThreeDimensionalGrid_WithSimpleBuilder.cs" />
+		<Compile Include="Atom\ThreeDimensionalGrid_WithComplimentaryBuilder.cs" />
+		<Compile Include="Atom\ThreeDimensionalGrid_WithComplimentaryBuilderOld.cs" />
+		<Compile Include="Atom\InternalLayeredBuilder.cs" />
+		<Compile Include="Atom\CollisionDiscrete2D\EdgeVec2D_Intersect_StaticMethods.cs" />
+		<Compile Include="Atom\Angles\ScaleInversionPerpendicularRotation3.cs" />
+		<Compile Include="Atom\CollisionDiscrete2D\CoincidentIntersector2D.cs" />
+		<Compile Include="Atom\PlaneVec2D.cs" />
+		<Compile Include="Atom\IThreeDimensionalGridElementsProvider.cs" />
+		<Compile Include="CollectionLike_DoubleEngine\Expendables.cs" />
+		<Compile Include="CollectionLike_DoubleEngine\SpanContainsVectors.cs" />
+
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="CollectionLike_DoubleEngine\SetsWithCustomComparer\CloseEnoughSets.cs" />
+		<Compile Include="CollectionLike_DoubleEngine\SetsWithCustomComparer\Vector2Comparer_1em5.cs" />
+		<Compile Include="EverGrowingRegistries\EverGrowingVec3DVec3F.gen.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>EverGrowingVec3DVec3F.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Helpers\Logger.cs" />
+		<Compile Include="VectorArray\VectorArray_V2V3V4_TS.gen.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>VectorArray_V2V3V4_TS.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="CollectionLike_DoubleEngine\LookUpTable_Extensions.cs" />
+
+		<Compile Include="Guard\Throw_InvalidOperation.cs" />
+		<Compile Include="Guard\Throw_Argument.cs" />
+		<Compile Include="Guard\Throw_If.cs" />
+
+		<Compile Include="Helpers\AbstractLoggerMethodAsJson.cs" />
+		<Compile Include="Helpers\AbstractLoggerMethod_ParamListExtestions.cs" />
+		<Compile Include="Helpers\GetCaller.cs" />
+		<Compile Include="Helpers\MethodLoggerToFile.cs" />
+		<Compile Include="Helpers\StringHelpers.cs" />
+
+		<Compile Include="Mesh\MeshFragmentVec3D.cs" />
+		<Compile Include="Mesh\MeshVolatileFragmentWithMaterials.cs" />
+		<Compile Include="Mesh\MeshVolatileFragmentWithMaterials_old_class _Pool.cs" />
+
+		<Compile Include="Poligons\TriVec3D.gen.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
+
+		<Compile Include="VectorArray\MultiplyByMatrix.cs" />
+
+
+	</ItemGroup>
+	<ItemGroup>
+
+
+		<Compile Include="Mesh\IMeshFragmentWithMaterials.cs" />
+		<Compile Include="Mesh\IMeshFragment.cs" />
+		<Compile Include="Mesh\MeshUtil_old_testingOnly.cs" />
+		<Compile Include="Mesh\MeshUtil_RemoveUnusedFaces.cs" />
+		<Compile Include="Mesh\MeshUtil_UnusedVerticeRemover.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MeshUtil_UnusedVerticeRemover.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshVolatileFragmentWithMaterials_old_class.cs" />
+		<Compile Include="Mesh\MeshBufferBuilder.cs" />
+		<Compile Include="Mesh\MeshBuilder.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MeshBuilder.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshFragmentExtensions.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MeshFragmentExtensions.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshFragmentVec2D_FromPoly.cs" />
+		<Compile Include="Mesh\MeshFragmentVec2D_Subtract.cs" />
+		<Compile Include="Mesh\MeshFragmentVec2D_To3D.cs" />
+		<Compile Include="Mesh\MeshFragmentVec3DWithMaterials.cs" />
+		<Compile Include="Mesh\MeshFragmentVec3D_SerializeAsOBJFormatString.cs" />
+		<Compile Include="Mesh\MeshFragmentVec3D_To2D.cs" />
+		<Compile Include="Mesh\_MeshFragment.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>_MeshFragment.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\_MeshFragment_Constructor_Json.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>_MeshFragment_Constructor_Json.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshFragmentVec2D.gen.cs" />
+		<Compile Include="Mesh\MeshFragmentVec2D_Constructor_Json.gen.cs" />
+
+
+		<Compile Include="Network\NetGridCell.cs" />
+
+
+		<Compile Include="EverGrowingRegistries\EverGrowingRegistry.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>EverGrowingRegistry.tt</DependentUpon>
+		</Compile>
+		<Compile Include="EverGrowingRegistries\EverGrowingRegistryEnchanced.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>EverGrowingRegistryEnchanced.tt</DependentUpon>
+		</Compile>
+		<Compile Include="EverGrowingRegistries\EverGrowingVec2D.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>EverGrowingVec2D.tt</DependentUpon>
+		</Compile>
+		<Compile Include="EverGrowingRegistries\IRegistry.cs" />
+		<Compile Include="EverGrowingRegistries\LinearRegistryVec2D.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>LinearRegistryVec2D.tt</DependentUpon>
+		</Compile>
+		<Compile Include="EverGrowingRegistries\RegistryIndex.cs" />
+		<Compile Include="Helpers\Castings.cs" />
+		<Compile Include="Helpers\Tries.cs" />
+
+		<Compile Include="Poligons\Edges\Edge.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Edge.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Poligons\Indexed\EdgeIndexed_MultiMaterialEdges.cs" />
+		<Compile Include="Poligons\Indexed\IndexedEdges.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>IndexedEdges.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Poligons\Indexed\IndexedTri_Extensions_AddTrianglesAndSplit.cs" />
+		<Compile Include="Poligons\PolyHelpers_RemoveUnnecessaryPoints.cs" />
+		<Compile Include="Poligons\Tri.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Tri.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Poligons\TrigonFaceExtensions_MeshFragment.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>TrigonFaceExtensions_MeshFragment.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Poligons\Tri_To.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Tri_To.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Remappers\Remapper.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Remapper.tt</DependentUpon>
+		</Compile>
+		<Compile Include="CollectionLike_DoubleEngine\SetsWithCustomComparer\Vec3DComparer_2em7.cs" />
+		<Compile Include="VectorArray\VectorArray_AssembleIndices.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_AssembleIndices.tt</DependentUpon>
+		</Compile>
+		<Compile Include="VectorArray\VectorArray_ConvertXYtoXYZandBack.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_ConvertXYtoXYZandBack.tt</DependentUpon>
+		</Compile>
+		<Compile Include="VectorArray\VectorArray_In_Count.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_In_Count.tt</DependentUpon>
+		</Compile>
+		<Compile Include="VectorArray\VectorArray_Last.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_Last.tt</DependentUpon>
+		</Compile>
+		<Compile Include="VectorArray\VectorArray_LoolUpMethods.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_LoolUpMethods.tt</DependentUpon>
+		</Compile>
+		<Compile Include="VectorArray\VectorArray_ToArrayTwiceRounded.cs" />
+		<Compile Include="VectorArray\VectorArray_V3_3DRotation.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VectorArray_V3_3DRotation.tt</DependentUpon>
+		</Compile>
+		<Compile Include="_Experiments\RecordStructExperiment.cs" />
+		<Compile Include="Helpers\Int_Shifts.cs" />
+
+		<Compile Include="Poligons\Indexed\EdgeIndexed.cs" />
+		<Compile Include="Poligons\Indexed\EdgeIndexed.gen.cs" />
+		<Compile Include="Poligons\Indexed\EdgeRegistered.gen.cs" />
+		<Compile Include="Poligons\Indexed\EdgeRegistered.cs" />
+		<Compile Include="Poligons\PolyHelpers_Edges_Vec2D.cs" />
+		<Compile Include="Poligons\PolyHelpers_IndexedEdges.cs" />
+		<Compile Include="Poligons\Edges\EdgeVec2D.gen.cs" />
+		<Compile Include="Poligons\Edges\EdgeVec3D.gen.cs" />
+		<Compile Include="Poligons\Indexed\IndexedEdgePoly.Builder.cs" />
+		<Compile Include="Poligons\PolyHelpers.cs" />
+		<Compile Include="Poligons\Indexed\EdgeIndexed_SingleEdgesFromTriangles.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.Builder.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.Subtracter.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.Sliver.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.Subpoly.cs" />
+		<Compile Include="Poligons\Indexed\IndexedPolyVec2D.TrianglesBuilder.cs" />
+		<Compile Include="Poligons\Indexed\IndexedTri.cs" />
+		<Compile Include="Poligons\Edges\EdgeVec2D_PointOnEdge_Enumerables_StaticMethods.cs" />
+		<Compile Include="Poligons\Edges\EdgeVec2D_Relation.cs" />
+		<Compile Include="Poligons\Indexed\IndexedEdgePoly.cs" />
+		<Compile Include="Poligons\Indexed\IndexedTri_Extensions.cs" />
+		<Compile Include="Poligons\PolyHelpers_IndexedCorners_IsPolyCornersClockwise.cs" />
+		<Compile Include="Poligons\TriVec2D.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Tri.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Poligons\TriVec2D_Min_Max.cs" />
+		<Compile Include="Poligons\TriVec2D_PointInside_movedToCollisionDiscrete2D - Copy.cs" />
+		<Compile Include="Poligons\TriVec2D_ToVec2DArray.cs" />
+		<Compile Include="Poligons\TriVec2D_Visibility_CW_CCW.cs" />
+
+
+		<Compile Include="CommonHelpers.cs" />
+
+
+		<Compile Include="Remappers\Remappers_Extensions.cs" />
+		<Compile Include="Remappers\Remapper_Int.gen.cs" />
+
+		<Compile Include="Atom\FlatNodes\ComplimentaryFlatNode.cs" />
+		<Compile Include="Atom\FlatNodes\ComplimentaryFlatNodes_Editor.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNode.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNodes.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNodes_Json.cs" />
+		<Compile Include="Atom\FlatNodes\FlatNodeTransform.cs" />
+		<Compile Include="Atom\Angles\PerpendicularAngle.cs" />
+		<Compile Include="GlobalSuppressions.cs" />
+		<Compile Include="Helpers\JsonHelpers.cs" />
+		<Compile Include="Mesh\IMeshBuilder.cs" />
+		<Compile Include="Mesh\MeshFragmentVec3D_CreateFromRegistered_.cs" />
+		<Compile Include="Mesh\MeshFragmentVec3D_CreateFromTwiceRoundVec3D.cs" />
+		<Compile Include="Mesh\MeshRegisteredBuilderVec3D.cs" />
+		<Compile Include="Mesh\MeshBuilderVec3D.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MeshBuilder.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshFragmentVec3D.gen.cs">
+			<DependentUpon>_MeshFragment.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshFragmentVec3D_Constructor_Json.gen.cs">
+			<DependentUpon>_MeshFragment_Constructor_Json.tt</DependentUpon>
+		</Compile>
+		<Compile Include="Mesh\MeshUtil.cs" />
+
+
+		<Compile Include="Helpers\Uint_Shifts.cs" />
+		<Compile Include="Atom\RayVec2D.cs" />
+		<Compile Include="Remappers\Remapper_RegistryIndex.gen.cs" />
+		<Compile Include="CollectionLike_DoubleEngine\SetsWithCustomComparer\Vec3DComparer_2em5.cs" />
+		<Compile Include="CollectionLike_DoubleEngine\SetsWithCustomComparer\Vec2DComparer_2em5.cs" />
+		<Compile Include="VectorArray\Generic_AssembleIndices.cs" />
+		<Compile Include="_InternalTesting\EmptyValues.cs" />
+		<Compile Include="_InternalTesting\InternalTesting.Assert.cs" />
+		<Compile Include="_InternalTesting\InternalTesting.cs" />
+		<Compile Include="_InternalTesting\InternalTesting.Polys.cs" />
+		<Compile Include="_InternalTesting\TestingOnlyAttribute.cs" />
+		<Compile Include="__Globals.cs" />
+		<Compile Include="__GlobalStatic.gen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>__GlobalStatic.tt</DependentUpon>
+		</Compile>
+		<Compile Include="__Obsoletes.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Collections.Pooled" Version="1.0.82" />
+		<PackageReference Include="JsonKnownTypes" Version="0.5.5" />
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0-preview1.23080.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<!--
+		PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0-preview1.23080.2"
+			<PrivateAssets>all</PrivateAssets
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets
+		</PackageReference
+		-->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="DoubleEngine.CommonHelpers">
+	    <HintPath>..\..\DoubleEngine.CommonHelpers\bin\Release\netstandard2.1\DoubleEngine.CommonHelpers.dll</HintPath>
+	  </Reference>
+	  <Reference Include="DoubleEngine.UVectorCore">
+	    <HintPath>..\..\DoubleEngine.UVectorCore\bin\Release\netstandard2.1\DoubleEngine.UVectorCore.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Lzma2201">
+	    <HintPath>..\..\Lzma2201\Lzma2201\bin\Release\netstandard2.1\Lzma2201.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+	<ItemGroup>
+
+		<None Update="EverGrowingRegistries\LinearRegistryVec2D.tt">
+			<LastGenOutput>LinearRegistryVec2D.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="Mesh\MeshUtil_UnusedVerticeRemover.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>MeshUtil_UnusedVerticeRemover.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Poligons\Edges\Edge.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Edge.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Remappers\Remapper.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Remapper.gen.cs</LastGenOutput>
+		</None>
+		<None Update="EverGrowingRegistries\EverGrowingVec2D.tt">
+			<LastGenOutput>EverGrowingVec2D.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="EverGrowingRegistries\EverGrowingVec3DVec3F.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>EverGrowingVec3DVec3F.gen.cs</LastGenOutput>
+		</None>
+		<None Update="EverGrowingRegistries\_EverGrowingRegistry.ttinclude">
+			<Generator></Generator>
+		</None>
+		<None Update="EverGrowingRegistries\EverGrowingRegistry.tt">
+			<LastGenOutput>EverGrowingRegistry.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="EverGrowingRegistries\EverGrowingRegistryEnchanced.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>EverGrowingRegistryEnchanced.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Mesh\MeshFragmentExtensions.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>MeshFragmentExtensions.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Poligons\Indexed\IndexedEdges.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>IndexedEdges.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Poligons\Tri.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Tri.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Poligons\TrigonFaceExtensions_MeshFragment.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>TrigonFaceExtensions_MeshFragment.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Poligons\Tri_To.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Tri_To.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Mesh\MeshBuilder.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Meshbuilder.gen.cs</LastGenOutput>
+		</None>
+		<None Update="Mesh\_MeshFragment.tt">
+			<LastGenOutput>_MeshFragment.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="Mesh\_MeshFragment_Constructor_Json.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>_MeshFragment_Constructor_Json.gen.cs</LastGenOutput>
+		</None>
+		<None Update="VectorArray\VectorArray_Last.tt">
+			<LastGenOutput>VectorArray_Last.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="VectorArray\VectorArray_ConvertXYtoXYZandBack.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>VectorArray_ConvertXYtoXYZandBack.gen.cs</LastGenOutput>
+		</None>
+		<None Update="VectorArray\VectorArray_AssembleIndices.tt">
+			<LastGenOutput>VectorArray_AssembleIndices.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="VectorArray\VectorArray_V3_3DRotation.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>VectorArray_V3_3DRotation.gen.cs</LastGenOutput>
+		</None>
+		<None Update="VectorArray\VectorArray_In_Count.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>VectorArray_In_Count.gen.cs</LastGenOutput>
+		</None>
+		<None Update="VectorArray\VectorArray_V2V3V4_TS.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>VectorArray_V2V3V4_TS.gen.cs</LastGenOutput>
+		</None>
+		<None Update="VectorArray\VectorArray_LoolUpMethods.tt">
+			<LastGenOutput>VectorArray_LoolUpMethods.gen.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="_Vector_VectorLike.tt">
+			<LastGenOutput>_Vector_VectorLike.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="_Vector_basicOperations.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>_Vector_basicOperations.cs</LastGenOutput>
+		</None>
+		<None Update="__GlobalStatic.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>__GlobalStatic.gen.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+	<PropertyGroup>
+		<AtomKnackPluginsPath>C:\Projects\AtomKnack\Assets\Plugins</AtomKnackPluginsPath>
+		<EditorAssetCraftPluginsPath>C:\Projects\EditorAssetCraft\Assets\Plugins</EditorAssetCraftPluginsPath>
+		<DoubleLibrary_TestingPluginsPath>C:\Projects\DoubleLibrary_Testing\Assets\Plugins</DoubleLibrary_TestingPluginsPath>
+		<MirrorFirstProjectPluginsPath>C:\Projects\MirrorFirstProject\Assets\Plugins</MirrorFirstProjectPluginsPath>
+		<TreeLikeEditorProjectPluginsPath>C:\Projects\TreeLikeEditor\Assets\Plugins</TreeLikeEditorProjectPluginsPath>
+	</PropertyGroup>
+	<Target Condition=" '$(Configuration)' == 'AtomKnackRelease' " Name="AfterBuild_AtomKnackReleaseBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_AtomKnackReleaseBuild Start message" />
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(AtomKnackPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Message Text="AfterBuild_AtomKnackReleaseBuild Ended" />
+	</Target>
+	<Target Condition=" '$(Configuration)' == 'Testing' " Name="AfterBuild_TestingBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_TestingBuild Start message" />
+		<!-- Insert tasks to run after build here; another variant of conditioning Condition="$(DefineConstants.Contains('TESTING'))"   -->
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(DoubleLibrary_TestingPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(DoubleLibrary_TestingPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(TreeLikeEditorProjectPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(TreeLikeEditorProjectPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Message Text="AfterBuild_TestingBuild Ended" />
+	</Target>
+	<Target Condition=" '$(Configuration)' == 'Debug' " Name="AfterBuild_DebugBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_DebugBuild Start message" />
+		<!-- Insert tasks to run after build here   -->
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.dll" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.pdb" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.pdb"></Copy>
+		<Message Text="AfterBuild_DebugBuild Ended" />
+	</Target>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="&quot;$(DevEnvDir)TextTransform.exe&quot; -out &quot;$(ProjectDir)__GlobalStatic.gen.cs&quot; &quot;$(ProjectDir)__GlobalStatic.tt&quot;" />
+	</Target>
+</Project>

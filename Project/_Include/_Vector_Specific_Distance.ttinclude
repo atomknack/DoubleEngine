@@ -1,0 +1,46 @@
+﻿<# if(extensionMethodThis.Length==0){ #>
+        <#=aInline#> 
+        <#=publicReadonly#> <#=b.type#> DistanceSqr( <#=typeName#> b) => (this - b).MagnitudeSqr();
+        <#=aInline#> 
+        <#=publicReadonly#> <#=b.type#> Distance(<#=typeName#> b) => (this - b).Magnitude();
+        <#=aInline#> 
+        <#=publicReadonly#> <#=b.type#> DistanceManhattan(<#=typeName#> b) => (this - b).MagnitudeManhattan();
+        <#=aInline#> 
+        <#=publicReadonly#> bool CloseByEach(<#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> ) =>
+            <#=String.Join(" && ",fieldNames.Select(x=> $"{math["Abs"]}({x} - b.{x}) < epsilon"))#>;
+        <#=aInline#> 
+        <#=publicReadonly#> bool CloseBySqrDistance(<#=typeName#> b, <#=b.type#> sqrEpsilon = <#=epsilonSqrDistance#> ) => DistanceSqr(this, b) <= sqrEpsilon;
+        <#=aInline#> 
+        <#=publicReadonly#> bool CloseByDistance( <#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> ) => Distance(this, b) <= epsilon;
+        <#=aInline#>
+        <#=publicReadonly#> bool CloseByManhattan( <#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> ) =>
+            CloseByManhattan(this, b, epsilon);
+
+<# } #>
+        <#=aInline#> 
+        <#=publicStatic#> <#=b.type#> DistanceSqr(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b) => (a - b).MagnitudeSqr();
+        <#=aInline#> 
+        <#=publicStatic#> <#=b.type#> Distance(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b) => (a - b).Magnitude();
+        <#=aInline#> 
+        <#=publicStatic#> <#=b.type#> DistanceManhattan(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b) => (a - b).MagnitudeManhattan();
+        <#=aInline#> 
+        <#=publicStatic#> bool CloseByEach(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> ) =>
+            <#=String.Join(" && ",fieldNames.Select(x=> $"{math["Abs"]}(a.{x} - b.{x}) < epsilon"))#>;
+        <#=aInline#> 
+        <#=publicStatic#> bool CloseBySqrDistance(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b, <#=b.type#> sqrEpsilon = <#=epsilonSqrDistance#> ) => DistanceSqr(a, b) <= sqrEpsilon;
+        <#=aInline#> 
+        <#=publicStatic#> bool CloseByDistance(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> ) => Distance(a, b) <= epsilon;
+        <#=aInline#>
+        <#=publicStatic#> bool CloseByManhattan(<#=extensionMethodThis#><#=typeName#> a, <#=typeName#> b, <#=b.type#> epsilon = <#=epsilonDistance#> )
+        {
+            <#=b.type#> d = <#=math["Abs"]#>(a.<#=fieldNames[0]#> - b.<#=fieldNames[0]#>);
+            if (d > epsilon)
+                return false;
+<# for (int i = 1; i<fieldNames.Length; i++) { #>
+            d += <#=math["Abs"]#>(a.<#=fieldNames[i]#> - b.<#=fieldNames[i]#>);
+            if (d > epsilon)
+                return false;
+<# } #>
+            return true;
+        }
+

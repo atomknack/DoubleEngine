@@ -1,0 +1,27 @@
+﻿<#+
+public class CollectionIterator
+{
+
+// example of use in: VectorArray_AssembleIndices.tt
+
+	public static readonly CollectionIterator readOnlySpan = new CollectionIterator(x=>$"ReadOnlySpan<{x}>", "Length","ReadOnlySpan");
+	public static readonly CollectionIterator iReadOnlyList = new CollectionIterator(x=>$"IReadOnlyList<{x}>", "Count","IReadOnlyList");
+
+	public static readonly (CollectionIterator readOnly, CollectionIterator writable) spanCombination =
+		(readOnlySpan, new CollectionIterator(x=>$"Span<{x}>", "Length", "Span"));
+	public static readonly (CollectionIterator readOnly, CollectionIterator writable) iListCombination =
+		(iReadOnlyList, new CollectionIterator(x=>$"IList<{x}>", "Count", "IList"));
+
+	public readonly Func<string, string> name;
+	public readonly string length;
+	public readonly string nameOfType;
+
+	public CollectionIterator(Func<string, string> name, string length, string nameOfType)
+		{
+		this.name = name;
+		this.length = length;
+		this.nameOfType = nameOfType;
+		}
+}
+
+#>

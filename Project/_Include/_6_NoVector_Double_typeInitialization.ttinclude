@@ -1,0 +1,20 @@
+﻿<#@ include file="_5_mathFuncs_Double_Initialization.ttinclude" #>
+<#
+typeName = "noVectorDouble"; 
+fieldNames = null;
+
+inMod = "in ";
+b = new Basic("double", "Double", "", "d");
+/*basicType = "double";
+basicCapital = "Double";
+toBasicType = "";
+basicTypeValueEnding = "d";*/
+//basicType = "double";
+//basicCapital = "Double";
+//toBasicType = "";
+//basicTypeValueEnding = "d";
+
+defaultValues = null;
+
+SaveCurrentTypeDescription();
+#>

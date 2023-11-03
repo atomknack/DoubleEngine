@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+		<BaseIntermediateOutputPath>C:\Projects\DoubleEngine\bin\</BaseIntermediateOutputPath>
+		<BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">C:\Projects\DoubleEngine\bin\</BaseIntermediateOutputPath>
+		<BaseIntermediateOutputPath Condition="!HasTrailingSlash('$(BaseIntermediateOutputPath)')">$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
+		<_InitialBaseIntermediateOutputPath>$(BaseIntermediateOutputPath)</_InitialBaseIntermediateOutputPath>
+        <MSBUildProjectExtensionsPath>C:\Projects\DoubleEngine\bin</MSBUildProjectExtensionsPath>
+    </PropertyGroup>
+</Project>

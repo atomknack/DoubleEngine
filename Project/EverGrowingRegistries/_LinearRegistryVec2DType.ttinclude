@@ -1,0 +1,15 @@
+﻿<# 
+string typeName = "LinearRegistyVec2D";
+string constructorName = typeName;
+bool generic = false;
+//bool enchanced = false;
+
+string additionalUsings = "";
+string additionalMembers = "internal static bool ItemsEqual(Vec2D a, Vec2D b) => a.CloseByEach(b, Vec2DComparer_2em5.EPSILON);";
+
+string TName = "Vec2D";
+//string TConverted = "";
+//bool canAddConverted = false;
+
+//string dictionaryConstructor = "new(Vec2DComparer_2em5.ComparerInstance)";
+#>

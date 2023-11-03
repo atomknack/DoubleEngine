@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleEngine", "DoubleEngine.csproj", "{D8B71AE8-5183-47DD-A314-813F69AB2F68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{997CFDFC-5CF5-44D8-875F-EB7C4B9E08D3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		NewCustom|Any CPU = NewCustom|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.NewCustom|Any CPU.ActiveCfg = NewCustom|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.NewCustom|Any CPU.Build.0 = NewCustom|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03846434-811F-4842-A362-F42DC8A84D2F}
+	EndGlobalSection
+EndGlobal

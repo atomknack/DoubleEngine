@@ -1,0 +1,11 @@
+﻿<#
+typeName = "Vec3short"; 
+fieldNames = new[]{"x","y","z"};
+
+inMod = "in ";
+b = new Basic("short", "Int16", "", "");
+
+defaultValues = new[]{"0","0","0"};
+
+SaveCurrentTypeDescription();
+#>

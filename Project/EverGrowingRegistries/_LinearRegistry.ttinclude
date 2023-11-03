@@ -1,0 +1,133 @@
+﻿<#/*THIS IS A T4 INCLUDE FILE*/#>
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using Collections.Pooled;
+using CollectionLike.Comparers.SetsWithCustomComparer;
+using CollectionLike.Pooled;
+using System.Text;<#=additionalUsings#>
+
+namespace <#=globalNamespaceName#>
+{
+    public sealed class <#=typeName#>: IRegistry<<#=TName#>>, IDisposable
+    {
+        public static <#=typeName#> Create(int startingCapacity = 100) => new <#=constructorName#><# if (generic) { #>< <#=TName#>><#}#>(startingCapacity);
+
+        private int _registeredCount;
+        private <#=TName#>[] _currentArray;
+
+        private ArrayPool<<#=TName#>> _pool;
+        private bool _disposed;
+
+        <#=additionalMembers#>
+
+<# foreach((string ListType, string Length, string ValueGetter) listlike in 
+        new[]{
+        //("int[]", "Length", ""),
+        //("List<int>", "Count", ""),
+        ("ReadOnlySpan<RegistryIndex>", "Length", ".Value"),
+        ("RegistryIndex[]", "Length", ".Value"),
+        ("List<RegistryIndex>", "Count", ".Value"),
+        ("IReadOnlyList<RegistryIndex>", "Count", ".Value"),
+        }) { #>
+        public <#=TName#>[] AssembleIndices(<#=listlike.ListType#> indexes)
+        {
+        <#=TName#>[] items = new <#=TName#>[indexes.<#=listlike.Length#>];
+        for(int i=0; i<indexes.<#=listlike.Length#>; i++)
+            items[i] = _currentArray[indexes[i]<#=listlike.ValueGetter#>];
+        return items;
+        }
+        public PooledList<<#=TName#>> PoolListAssembleIndices(<#=listlike.ListType#> indexes)
+        {
+        PooledList<<#=TName#>> items = new PooledList<<#=TName#>>(indexes.<#=listlike.Length#>, ClearMode.Never, true);
+        for(int i=0; i<indexes.<#=listlike.Length#>; i++)
+            items[i] = _currentArray[indexes[i]<#=listlike.ValueGetter#>];
+        return items;
+        }
+<# } #>
+        public <#=TName#> GetItem(RegistryIndex index) => _currentArray[index.Value];
+        public <#=TName#> this[RegistryIndex index]{ get=> _currentArray[index.Value]; }
+        public ReadOnlySpan<<#=TName#>> Snapshot() => new ReadOnlySpan<<#=TName#>>(_currentArray, 0, _registeredCount);
+
+        private bool TryGetIndex(<#=TName#> item, out RegistryIndex index)
+        {
+            for(int i = 0; i< _registeredCount; ++i)
+                if (ItemsEqual(item, _currentArray[i]))
+                {
+                    index = new RegistryIndex(i);
+                    return true;
+                }
+            index = new RegistryIndex(-1);
+            return false;
+        }
+
+        public RegistryIndex GetOrAdd(<#=TName#> item)
+        {
+            if (TryGetIndex(item, out RegistryIndex foundIndex))
+                return foundIndex;
+
+                int newElementIndex = AddToArray(item);
+                return new RegistryIndex(newElementIndex);
+
+            int AddToArray(<#=TName#> item)
+            {
+                int newElementIndex = _registeredCount;
+                if (newElementIndex >= _currentArray.Length)
+                {
+                    int newArraysSize = newElementIndex * 2;
+                    <#=TName#>[] newArray = _pool.RentOrGetEmpty(newArraysSize);
+                    Array.Copy(_currentArray, newArray, _currentArray.Length);
+                    <#=TName#>[] oldArray = _currentArray;
+                    _currentArray = newArray;
+                    _pool.ReleaseAndSetAsEmpty(ref oldArray);
+                }
+                _currentArray[newElementIndex] = item;
+
+                _registeredCount++;
+                return newElementIndex;
+            }
+        }
+        protected <#=constructorName#>(int startingCapacity = 100)
+        {
+            _registeredCount = 0;
+            _pool = ArrayPool<<#=TName#>>.Shared;
+            _currentArray = _pool.RentOrGetEmpty(startingCapacity);
+            _disposed = false;
+        }
+
+        public void Dispose()
+        {
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            //GC.SuppressFinalize(this);
+        }
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            _pool.ReleaseAndSetAsEmpty(ref _currentArray);
+            _disposed = true;
+        }
+        /*
+        //private <#=TName#>[] CreateNewArray(int length) => new <#=TName#>[length];
+        private <#=TName#>[] RentArray(int length)
+        {
+            if (length < 0)
+                Guard.Throw.ArgumentLengthCannotBeNegative();
+            if (length == 0)
+                return Array.Empty<<#=TName#>>();
+            return _pool.Rent(length);
+        }
+        private void ReleaseArray(ref <#=TName#>[] array)
+        {
+        if(array == null || array.Length == 0)
+            return;
+        _pool.Return(array);
+        array = Array.Empty<<#=TName#>>();
+        }
+        */
+
+    }
+}

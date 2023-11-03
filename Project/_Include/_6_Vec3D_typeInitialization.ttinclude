@@ -1,0 +1,17 @@
+﻿<#@ include file="_5_mathFuncs_Double_Initialization.ttinclude" #>
+<#
+typeName = "Vec3D"; 
+fieldNames = new[]{"x","y","z"};
+
+//string inModifier = "";//string inModifier = "in ";
+inMod = "in ";
+b = new Basic("double", "Double", "", "d");
+/*basicType = "double";
+basicCapital = "Double";
+toBasicType = "";
+basicTypeValueEnding = "d";*/
+
+defaultValues = new[]{"0d","0d","0d"};
+
+SaveCurrentTypeDescription();
+#>

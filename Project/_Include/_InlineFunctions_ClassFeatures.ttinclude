@@ -1,0 +1,22 @@
+﻿<#+
+public string StaticVectorVectorMethod(string methodName, string vector1, string vector2, string operation)
+{
+	#><#=aInline1CRLF4s#><#=publicStatic#> <#=typeName#> <#=methodName#>(<#=inMod#><#=typeName#> <#=vector1#>, <#=inMod#><#=typeName#> <#=vector2#>) => <#=VectorVectorOperation(vector1!=""?vector1+".":"", vector2!=""?vector2+".":"", operation)#><#+
+	return "";
+}
+public string StaticVectorScalarMethod(string methodName, string vector, string scalar, string operation)
+{
+	#><#=aInline1CRLF4s#><#=publicStatic#> <#=typeName#> <#=methodName#>(<#=inMod#><#=typeName#> <#=vector#>, <#=b.type#> <#=scalar#>) => <#=VectorScalarOperation(vector+".", scalar, operation)#><#+
+	return "";
+}
+public string VectorScalarOperation(string vector, string scalar, string operation)
+{
+	#>new <#=typeName#> ( <#=String.Join(", ",fieldNames.Select(x=> $"{vector}{x} {operation} {scalar}"))#> );<#+
+	return "";
+}
+public string VectorVectorOperation(string vector1, string vector2, string operation)
+{
+	#>new <#=typeName#> ( <#=String.Join(", ",fieldNames.Select(x=> $"{vector1}{x} {operation} {vector2}{x}"))#> );<#+
+	return "";
+}
+#>

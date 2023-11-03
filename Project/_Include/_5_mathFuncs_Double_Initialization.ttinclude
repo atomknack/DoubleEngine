@@ -1,0 +1,10 @@
+﻿<#
+math = new Dictionary<string,string>();
+math["Sign"] = "Math.Sign";
+math["Abs"] = "Math.Abs";//,"MathF.Sin"};
+math["Sin"] = "Math.Sin";//,"MathF.Sin"};
+math["Asin"] = "Math.Asin";
+math["Cos"] = "Math.Cos";//string[] cosFunc = {"Math.Cos","MathF.Cos"};
+math["Acos"] = "Math.Acos";
+math["Round"] = "Math.Round";
+#>

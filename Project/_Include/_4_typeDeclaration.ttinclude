@@ -1,0 +1,87 @@
+﻿<#+
+string typeName; 
+string[] fieldNames;
+
+string inMod;
+Basic b;
+/*
+//b.type		//string basicType;
+//b.capital		//string basicCapital;
+//b.toCast		//string toBasicType;
+//b.valueEnding	//string basicTypeValueEnding;
+*/
+string[] defaultValues;
+List<TypeDescription> availableTypes;
+public Dictionary<string,string> math;
+
+//////////////////////////////////////
+
+public class Basic
+{
+	public readonly string type;
+	public readonly string capital;
+	public readonly string toCast;
+	public readonly string valueEnding;
+
+	public Basic( string type, string capital, string toCast, string valueEnding )
+		{
+		this.type = type;
+		this.capital = capital;
+		this.toCast = toCast;
+		this.valueEnding = valueEnding;
+		}
+}
+
+public class TypeDescription
+{
+	public string typeName;
+	public string[] fieldNames;
+	public string inMod;
+	public Basic b;
+	public string[] defaultValues;
+	public Dictionary<string,string> math;
+
+	public TypeDescription(
+				string typeName, 
+				string[] fieldNames, 
+				string inMod, 
+				Basic b,
+				string[] defaultValues,
+				Dictionary<string,string> math
+				)
+	{
+		this.typeName = typeName;
+		this.fieldNames = fieldNames;
+		this.inMod = inMod; 
+		this.b = b;
+		this.defaultValues = defaultValues;
+		this.math = math;
+	}
+}
+
+public void SaveCurrentTypeDescription()
+{
+	if (availableTypes==null)
+		availableTypes = new List<TypeDescription>();
+	availableTypes.RemoveAll(x=>x.typeName == typeName);
+
+	TypeDescription t = new TypeDescription(
+		typeName, 
+		fieldNames, 
+		inMod, 
+		b,
+		defaultValues,
+		math);
+
+	availableTypes.Add(t);
+}
+public void UnfoldTypeDescription(TypeDescription t)
+{
+	typeName = t.typeName;
+	fieldNames = t.fieldNames;
+	inMod = t.inMod;
+	b = t.b;
+	defaultValues = t.defaultValues;
+	math = t.math;
+}
+#>

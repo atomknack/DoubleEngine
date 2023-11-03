@@ -1,0 +1,16 @@
+﻿<#@ include file="_5_mathFuncs_Float_Initialization.ttinclude" #>
+<#
+typeName = "Quaternion"; 
+fieldNames = new[]{"x","y","z","w"};
+
+inMod = "";//"in ";
+b = new Basic("float", "Float", "(float)", "f");
+/*basicType = "float";
+basicCapital = "Float";
+toBasicType = "(float)";
+basicTypeValueEnding = "f";*/
+
+defaultValues = new[]{"0f","0f","0f","0f"};
+
+SaveCurrentTypeDescription();
+#>

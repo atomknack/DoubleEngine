@@ -1,0 +1,116 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);TRACE;TESTING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);TRACE;TESTING</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Events\EventSubscribedAndPublished.gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EventSubscribedAndPublished.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="C:\Projects\TestingAddons\**\*.cs">
+			<Link>TestingAddons\%(RecursiveDir)%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Compile>
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Collections.Pooled" Version="2.0.0-preview.27" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0-preview-20220707-01" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="xunit" Version="2.4.3-pre.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DoubleEngine">
+      <HintPath>..\bin\Testing\netstandard2.1\DoubleEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Lzma2201">
+      <HintPath>..\..\Lzma2201\Lzma2201\bin\Release\netstandard2.1\Lzma2201.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CollectionLike\Comparers\Comparers_Test.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Comparers_Test.gen.cs</LastGenOutput>
+    </None>
+    <None Update="CollectionLike\ExtensionsTests\Fill_Tests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Fill_Tests.gen.cs</LastGenOutput>
+    </None>
+    <None Update="Events\EventSubscribedAndPublished.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EventSubscribedAndPublished.gen.cs</LastGenOutput>
+    </None>
+    <None Update="Events\EventWithParameter.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EventWithParameter.gen.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CollectionLike\Comparers\Comparers_Test.gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Comparers_Test.tt</DependentUpon>
+    </Compile>
+    <Compile Update="CollectionLike\ExtensionsTests\Fill_Tests.gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Fill_Tests.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Events\EventSubscribedAndPublished.gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EventSubscribedAndPublished.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Events\EventWithParameter.gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EventWithParameter.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NUnit_parts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Project\DoubleEngine.csproj" />
+    <ProjectReference Include="..\UHelpers\DoubleEngine.UHelpers.csproj" />
+  </ItemGroup>
+
+</Project>

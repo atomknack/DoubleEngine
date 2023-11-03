@@ -1,0 +1,15 @@
+﻿<# 
+string typeName = "EverGrowingVec3DVec3F";
+string constructorName = "EverGrowingVec3DVec3F";
+bool generic = false;
+bool enchanced = true;
+
+string additionalUsings = "using CollectionLike.Comparers.SetsWithCustomComparer;";
+string additionalMembers = "public const double EPSILON = Vec3DComparer_2em5.EPSILON;";
+
+string TName = "Vec3D";
+string TConverted = "Vec3F";
+//bool canAddConverted = false;
+
+string dictionaryConstructor = "new(Vec3DComparer_2em5.ComparerInstance)";
+#>

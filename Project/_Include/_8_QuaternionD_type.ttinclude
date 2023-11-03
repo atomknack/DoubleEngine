@@ -1,0 +1,2 @@
+﻿<#@ include file="_4_typeDeclaration.ttinclude" #>
+<#@ include file="_6_QuaternionD_typeInitialization.ttinclude" #>

@@ -1,0 +1,182 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Collections.Pooled;
+using CollectionLike;
+using CollectionLike.Pooled;
+
+namespace <#=globalNamespaceName#>
+{
+    public partial record MeshFragment<#=typeName#>
+    {
+        internal static MeshFragment<#=typeName#> CreateMeshFragmentAsIsWithoutArraysCopying(<#=typeName#>[] vertices, int[] triangles)
+            => new MeshFragment<#=typeName#>(vertices, triangles);
+        internal static MeshFragment<#=typeName#> CreateMeshFragmentAsIsWithoutArraysCopying((<#=typeName#>[] vertices, int[] triangles) tuple)
+            => new MeshFragment<#=typeName#>(tuple.vertices, tuple.triangles);
+        public static MeshFragment<#=typeName#> CreateMeshFragment(IMeshFragment<<#=typeName#>> source) => 
+            CreateMeshFragment(source.Vertices, source.Faces);
+        public static MeshFragment<#=typeName#> CreateMeshFragment(ReadOnlySpan<<#=typeName#>> vertices, ReadOnlySpan<int> triangles)
+            => new MeshFragment<#=typeName#>(vertices.ToArray(), triangles.ToArray());
+
+        public static MeshFragment<#=typeName#> CreateMeshFragment(<#=typeName#>[] vertices, int[] triangles)
+            => new MeshFragment<#=typeName#>((<#=typeName#>[])vertices.Clone(), (int[])triangles.Clone());
+
+        public static MeshFragment<#=typeName#> CreateMeshFragment((List<<#=typeName#>> vertices, List<int> triangles) tuple)
+            => CreateMeshFragment(tuple.vertices, tuple.triangles);
+        public static MeshFragment<#=typeName#> CreateMeshFragment(List<<#=typeName#>> vertices, List<int> triangles)
+            => new MeshFragment<#=typeName#>(vertices.ToArray(), triangles.ToArray());
+
+
+        public static MeshFragment<#=typeName#> CreateMeshFragment(List<<#=typeName#>> vertices, List<(int v0i, int v1i, int v2i)> faces)
+            => CreateMeshFragment(vertices.ToArray(), faces.ToArray()); 
+        public static MeshFragment<#=typeName#> CreateMeshFragment(<#=typeName#>[] vertices, (int v0i, int v1i, int v2i)[] faces)
+        {
+            if (faces.Length == 0)
+                return MeshFragment<#=typeName#>.Empty;
+            int[] triangles = new int[faces.Length * 3];
+            for (var f = 0; f < faces.Length; f++)
+            {
+                triangles[(f * 3) + 0] = faces[f].v0i;
+                triangles[(f * 3) + 1] = faces[f].v1i;
+                triangles[(f * 3) + 2] = faces[f].v2i;
+            }
+            return new MeshFragment<#=typeName#>((<#=typeName#>[])vertices.Clone(), triangles);
+        }
+        public static MeshFragment<#=typeName#> CreateMeshFragment(ReadOnlySpan<<#=typeName#>> vertices, ReadOnlySpan<IndexedTri> faces)
+        {
+            if (faces.Length == 0)
+                return MeshFragment<#=typeName#>.Empty;
+            int[] triangles = new int[faces.Length * 3];
+            for (var f = 0; f < faces.Length; f++)
+            {
+                triangles[(f * 3) + 0] = faces[f].v0;
+                triangles[(f * 3) + 1] = faces[f].v1;
+                triangles[(f * 3) + 2] = faces[f].v2;
+            }
+            return new MeshFragment<#=typeName#>((<#=typeName#>[])vertices.ToArray(), triangles);
+        }
+
+<# if (is3D[typeName]){ #>
+
+        public MeshFragment<#=typeName#> ScaledWithoutOrderInversion(<#=typeName#> scale) => 
+            new MeshFragment<#=typeName#>(vertices.Scaled(scale), triangles);
+        public MeshFragment<#=typeName#> Scaled(<#=typeName#> scale)
+        {
+            if (scale.x * scale.y * scale.z < 0)
+                return new MeshFragment<#=typeName#>(vertices.Scaled(scale), ReversedTriangles());
+            //return new MeshFragment(vertices.Scaled(scale), triangles.Reversed().ToArray()); //Array reverse change triangles order to backwards
+            return new MeshFragment<#=typeName#>(vertices.Scaled(scale), triangles);
+        }
+        public MeshFragment<#=typeName#> Rotated(<#=quatDict[typeName]#> rotation) => new MeshFragment<#=typeName#>(vertices.Rotated(rotation), triangles);
+        public MeshFragment<#=typeName#> Translated(<#=typeName#> translation) => new MeshFragment<#=typeName#>(vertices.Translated(translation), triangles);
+<# } #>
+        public int[] ReversedTriangles()
+        {
+            int[] reversed = new int[triangles.Length];
+            for (var i = 0; i < triangles.Length; i += 3)
+                (reversed[i], reversed[i+1], reversed[i + 2]) = (triangles[i + 2], triangles[i + 1], triangles[i]);
+            return reversed;
+        }
+
+        public MeshFragment<#=typeName#> MakeFragmentWhereAllVerticesIs(Func<<#=typeName#>, bool> VerticeSelector)
+        {
+            PooledList<int> selectedFaces = SelectFacesWhereAllVerticesIs(VerticeSelector);
+            if (selectedFaces.Count == 0)
+                return MeshFragment<#=typeName#>.Empty;
+            return CreateMeshFragmentAsIsWithoutArraysCopying(MeshUtil.RemoveUnusedVerticesAndFacesAndReturnNewArraysTriangles(Vertices,Faces,selectedFaces));;
+        }
+
+        public bool TryMakeNotEmptyFragmentWhereAllVerticesIs(Func<<#=typeName#>, bool> VerticeSelector, out MeshFragment<#=typeName#> fragment)
+        {
+            PooledList<int> selectedFaces = SelectFacesWhereAllVerticesIs(VerticeSelector);
+            if (selectedFaces.Count == 0)
+            {
+                fragment = Empty;
+                return false;
+                //throw new ArgumentException("Selector has no triangles");
+            }
+            fragment = CreateMeshFragmentAsIsWithoutArraysCopying(
+                MeshUtil.RemoveUnusedVerticesAndFacesAndReturnNewArraysTriangles(Vertices,Faces,selectedFaces));
+            return true;
+        }
+        public PooledList<int> SelectFacesWhereAllVerticesIs(Func<<#=typeName#>, bool> VerticeSelector)
+        {
+            PooledSet<int> selectedVertices = Vertices.SelectVertices(VerticeSelector);
+            return Triangles.SelectFacesWhereAllVerticesInSet(selectedVertices);
+        }
+
+        public static void CheckTriangles(int[] triangles)
+        {
+            if (triangles.Length % 3 != 0)
+                throw new ArgumentException("Every triangle must contain 3 vertices");
+        }
+        public static void CheckVerticeIndexes(int[] triangles, int vertexesLength)
+        {
+            foreach (int vertIndex in triangles)
+                if (vertIndex < 0 || vertIndex >= vertexesLength)
+                    throw new ArgumentException($"Vertice index {vertIndex} must address only vertices from 0 up to {vertexesLength}");
+        }
+        public void CheckNotNull()
+        {
+            if (vertices == null)
+                throw new ArgumentException("MeshFragment vertices cannot be null");
+            if (triangles == null)
+                throw new ArgumentException("MeshFragment triangles cannot be null");
+        }
+        public MeshFragment<#=typeName#> JoinedClosestVerticesIfNeeded(float epsilon = 0.000_01f) 
+            {
+            if (epsilon < 0)
+                throw new ArgumentException("epsilon cannot be negative");
+            //Debug.Log($"Mesh fragment Joined field is {_joinedVertices}");
+            if (epsilon <= _joinedVertices)
+            {
+                //Debug.Log("Vertices already joined enough");
+                return this;
+            }
+            for (int i=0; i<vertices.Length; i++)
+                if (vertices.Count_CompareByEach(vertices[i], epsilon) > 1)
+                    return JoinedClosestVertices(epsilon);
+            /*
+            for (int i=0; i<vertices.Length; i++)
+                for(int j=0; j< vertices.Length; j++)
+                {
+                    if(i!=j && VectorUtil.CloseEnoughByEach(vertices[i],vertices[j],epsilon))
+                        return JoinedClosestVertices(epsilon);
+                }*/
+            //Debug.Log("Found no need to Join vertices");
+            return this;
+            } 
+        public MeshFragment<#=typeName#> JoinedClosestVertices(float epsilon = 0.000_01f) //TODO test
+        {
+            if (vertices.Length == 0)
+                return MeshFragment<#=typeName#>.Empty;
+            if (epsilon < 0)
+                throw new ArgumentException("epsilon cannot be negative");
+
+            int[] replaceVerticeIndex = new int[vertices.Length];
+            replaceVerticeIndex[0] = 0;
+            for (var i = 0; i < vertices.Length; i++)
+                replaceVerticeIndex[i] = vertices.CloseWithLowerIndexOrSelf( i, epsilon);
+            //replaceVerticeIndex[i] = vertices.ClosestOrLast(vertices[i], i, epsilon);
+            /*
+            int[] remapedTriangles = MeshUtil.RemapTriangles(triangles, replaceVerticeIndex);
+            (int[] remapedVerticeIndexes, int[] newTriangles) = MeshUtil.CreatePartialMesh(remapedTriangles);
+            Vec2D[] newVertices = vertices.AssembleIndices(remapedVerticeIndexes);//MeshUtil.RemapVertices(vertices, remapedVerticeIndexes);
+            */
+            using PooledList<IndexedTri> newFacesBuffer = Expendables.CreateList<IndexedTri>(Faces.Length);
+            MeshUtil.AddRemappedNonDegenerateFacesToBuffer(replaceVerticeIndex.AsReadOnlySpan(), Faces, newFacesBuffer);
+            using PooledArrayStruct<<#=typeName#>> newVertices =
+                MeshUtil.RemoveUnusedVerticesReturningPooledArrayAndReindexFaces_Span(newFacesBuffer.AsReadOnlySpan(), newFacesBuffer.AsSpan(), Vertices);
+
+            return new MeshFragment<#=typeName#>(newVertices.ToArray(), newFacesBuffer.AsReadOnlySpan().CastToInt_ReadOnlySpan().ToArray(), epsilon);
+        }
+
+        private void Check()
+        {
+            CheckNotNull();
+            CheckTriangles(triangles);
+            CheckVerticeIndexes(triangles, vertices.Length);
+        }
+    }
+}

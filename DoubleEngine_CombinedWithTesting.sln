@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleEngine", "Project\DoubleEngine.csproj", "{D8B71AE8-5183-47DD-A314-813F69AB2F68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{997CFDFC-5CF5-44D8-875F-EB7C4B9E08D3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleEngine_xUnit", "DoubleEngine_xUnit\DoubleEngine_xUnit.csproj", "{0ECD361F-24CC-4400-9313-AFE0B8E9F825}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68} = {D8B71AE8-5183-47DD-A314-813F69AB2F68}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleEngine.UHelpers", "UHelpers\DoubleEngine.UHelpers.csproj", "{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AtomKnackRelease|Any CPU = AtomKnackRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.AtomKnackRelease|Any CPU.ActiveCfg = AtomKnackRelease|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.AtomKnackRelease|Any CPU.Build.0 = AtomKnackRelease|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{D8B71AE8-5183-47DD-A314-813F69AB2F68}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.AtomKnackRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.AtomKnackRelease|Any CPU.Build.0 = Debug|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Testing|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECD361F-24CC-4400-9313-AFE0B8E9F825}.Testing|Any CPU.Build.0 = Debug|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.AtomKnackRelease|Any CPU.ActiveCfg = AtomKnackRelease|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.AtomKnackRelease|Any CPU.Build.0 = AtomKnackRelease|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Testing|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2A3C64-2A29-4AE3-86BB-EECA1FFDBD2D}.Testing|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03846434-811F-4842-A362-F42DC8A84D2F}
+	EndGlobalSection
+EndGlobal

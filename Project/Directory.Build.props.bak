@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+		<BaseIntermediateOutputPath>..\..\obj\</BaseIntermediateOutputPath>
+		<BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\obj\</BaseIntermediateOutputPath>
+		<BaseIntermediateOutputPath Condition="!HasTrailingSlash('$(BaseIntermediateOutputPath)')">$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
+		<_InitialBaseIntermediateOutputPath>$(BaseIntermediateOutputPath)</_InitialBaseIntermediateOutputPath>
+        <MSBUildProjectExtensionsPath>..\..\obj</MSBUildProjectExtensionsPath>
+    </PropertyGroup>
+</Project>

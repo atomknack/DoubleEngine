@@ -1,0 +1,16 @@
+﻿<#@ include file="_5_mathFuncs_Float_Initialization.ttinclude" #>
+<#
+typeName = "noVectorFloat"; 
+fieldNames = null;
+
+inMod = "in ";
+b = new Basic("float", "Float", "", "f");
+/*basicType = "float";
+basicCapital = "Float";
+toBasicType = "(float)";
+basicTypeValueEnding = "f";*/
+
+defaultValues = null;
+
+SaveCurrentTypeDescription();
+#>

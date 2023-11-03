@@ -1,0 +1,5 @@
+﻿<#@ include file="_4_typeDeclaration.ttinclude" #>
+<#@ include file="_6_Vec3D_typeInitialization.ttinclude" #>
+<#
+string methodProject_Epsilon = "1e-15d";
+#>

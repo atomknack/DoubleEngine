@@ -1,0 +1,9 @@
+﻿<#+ /*THIS IS A T4 INCLUDE FILE*/
+string globalNamespaceName = "DoubleEngine";
+string publicStatic = "public static";
+string publicReadonly = "public readonly";
+
+string aInline = "[MethodImpl(MethodImplOptions.AggressiveInlining)]";
+string aInline1CRLF4s = "[MethodImpl(MethodImplOptions.AggressiveInlining)]\r\n    ";
+string aInline1CRLF8s = "[MethodImpl(MethodImplOptions.AggressiveInlining)]\r\n        ";
+#>

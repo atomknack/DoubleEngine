@@ -1,0 +1,142 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+	  <Deterministic>true</Deterministic>
+	  <LangVersion>latest</LangVersion>
+	  <Configurations>Debug;Release;Testing;AtomKnackRelease</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UHelpers\Conversion_Matrix_To.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Project\__Globals.cs" Link="__Globals.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UHelpers\Conversion_Matrix_To.tt">
+      <LastGenOutput>Conversion_Matrix_To.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Project\DoubleEngine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DoubleEngine.CommonHelpers">
+      <HintPath>..\..\DoubleEngine.CommonHelpers\bin\Release\netstandard2.1\DoubleEngine.CommonHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="DoubleEngine.UVectorCore">
+      <HintPath>..\..\DoubleEngine.UVectorCore\bin\Release\netstandard2.1\DoubleEngine.UVectorCore.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\Program Files\Unity\Hub\Editor\2022.2.0b8\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UHelpers\Conversion_Matrix_To.gen.cs">
+      <DependentUpon>Conversion_Matrix_To.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UHelpers\Conversion_UnityTwiceRound_toV2V3.gen.cs">
+      <DependentUpon>Conversion_UnityTwiceRound_toV2V3.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UHelpers\Conversion_V2V3V4_Unity_ToArray.gen.cs">
+      <DependentUpon>Conversion_V2V3V4_Unity_ToArray.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UHelpers\Conversion_VectorLike_To.gen.cs">
+      <DependentUpon>Conversion_VectorLike_To.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UHelpers\UnityExtension_V2V3V4_basicOpertaions.gen.cs">
+      <DependentUpon>UnityExtension_V2V3V4_basicOpertaions.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UHelpers\UnityExtension_V2V3V4_Distance.gen.cs">
+      <DependentUpon>UnityExtension_V2V3V4_Distance.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="UHelpers\Conversion_UnityTwiceRound_toV2V3.tt">
+      <LastGenOutput>Conversion_UnityTwiceRound_toV2V3.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UHelpers\Conversion_V2V3V4_Unity_ToArray.tt">
+      <LastGenOutput>Conversion_V2V3V4_Unity_ToArray.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UHelpers\Conversion_VectorLike_To.tt">
+      <LastGenOutput>Conversion_VectorLike_To.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UHelpers\UnityExtension_V2V3V4_basicOpertaions.tt">
+      <LastGenOutput>UnityExtension_V2V3V4_basicOpertaions.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UHelpers\UnityExtension_V2V3V4_Distance.tt">
+      <LastGenOutput>UnityExtension_V2V3V4_Distance.gen.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+	<PropertyGroup>
+		<AtomKnackPluginsPath>C:\Projects\AtomKnack\Assets\Plugins</AtomKnackPluginsPath>
+		<EditorAssetCraftPluginsPath>C:\Projects\EditorAssetCraft\Assets\Plugins</EditorAssetCraftPluginsPath>
+		<DoubleLibrary_TestingPluginsPath>C:\Projects\DoubleLibrary_Testing\Assets\Plugins</DoubleLibrary_TestingPluginsPath>
+		<MirrorFirstProjectPluginsPath>C:\Projects\MirrorFirstProject\Assets\Plugins</MirrorFirstProjectPluginsPath>
+		<TreeLikeEditorProjectPluginsPath>C:\Projects\TreeLikeEditor\Assets\Plugins</TreeLikeEditorProjectPluginsPath>
+	</PropertyGroup>
+	<Target Condition=" '$(Configuration)' == 'AtomKnackRelease' " Name="AfterBuild_AtomKnackReleaseBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_AtomKnackReleaseBuild Start message" />
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(AtomKnackPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Message Text="AfterBuild_AtomKnackReleaseBuild Ended" />
+		
+		
+		<Copy SourceFiles="..\UHelpers\bin\AtomKnackRelease\netstandard2.1\DoubleEngine.dll" DestinationFiles="..\OutUnityPackage\DoubleEngine.dll"></Copy>
+		<Copy SourceFiles="..\UHelpers\bin\AtomKnackRelease\netstandard2.1\DoubleEngine.UHelpers.dll" DestinationFiles="..\OutUnityPackage\DoubleEngine.UHelpers.dll"></Copy>
+
+		<Copy SourceFiles="..\UHelpers\bin\AtomKnackRelease\netstandard2.1\Lzma2201.dll" DestinationFiles="..\OutUnityPackage\Lzma2201.dll"></Copy>
+		
+	</Target>
+	<Target Condition=" '$(Configuration)' == 'Testing' " Name="AfterBuild_TestingBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_TestingBuild Start message" />
+		<!-- Insert tasks to run after build here; another variant of conditioning Condition="$(DefineConstants.Contains('TESTING'))"   -->
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(DoubleLibrary_TestingPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(DoubleLibrary_TestingPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(TreeLikeEditorProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(TreeLikeEditorProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Message Text="AfterBuild_TestingBuild Ended" />
+	</Target>
+	<Target Condition=" '$(Configuration)' == 'Debug' " Name="AfterBuild_DebugBuild" AfterTargets="Build">
+		<Message Text="AfterBuild_DebugBuild Start message" />
+		<!-- Insert tasks to run after build here   -->
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(EditorAssetCraftPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.dll" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.dll"></Copy>
+		<Copy SourceFiles="$(TargetDir)\DoubleEngine.UHelpers.pdb" DestinationFiles="$(MirrorFirstProjectPluginsPath)\DoubleEngine\DoubleEngine.UHelpers.pdb"></Copy>
+		<Message Text="AfterBuild_DebugBuild Ended" />
+	</Target>
+</Project>

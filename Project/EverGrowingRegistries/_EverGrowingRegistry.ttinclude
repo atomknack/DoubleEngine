@@ -1,0 +1,124 @@
+﻿<#/*THIS IS A T4 INCLUDE FILE*/#>
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+<#=additionalUsings#>
+
+namespace <#=globalNamespaceName#>
+{
+    public sealed class <#=typeName#>: IRegistry<<#=TName#>>
+<# if (generic) { #>
+        where <#=TName#> : IEquatable<<#=TName#>><# if (enchanced) { #>, IConvertibleToOut<<#=TConverted#>> 
+        where <#=TConverted#> : IConvertibleToOut<<#=TName#>><# } #>
+<# } #>
+    {
+        public static <#=typeName#> Shared { get { return GetInstance(); } }
+        public static <#=typeName#> Create(int startingCapacity = 100) => new <#=constructorName#><# if (generic) { #>< <#=TName#><#if(enchanced){#>, <#=TConverted#> <#}#>><#}#>(startingCapacity);
+
+        private int _registeredCount;
+        private <#=TName#>[] _currentArray;
+        private ConcurrentDictionary<<#=TName#>, int> _allElements;
+        private static <#=typeName#> _instance = null;
+        private static object _lock = new object();
+        <#=additionalMembers#>
+<# if (enchanced) { #>
+        private <#=TConverted#>[] _convertedArray;
+        public <#=TConverted#> GetItem<#=TConverted#>(RegistryIndex index)=> _convertedArray[index.Value];
+        public ReadOnlySpan<<#=TConverted#>> SnapshotConverted() => new ReadOnlySpan<<#=TConverted#>>(_convertedArray, 0, _registeredCount);
+        //public int GetOrAdd(<#=TConverted#> item) => GetOrAdd(item.ConvertTo(out _));
+<# foreach((string ListType, string Length, string ValueGetter) listlike in 
+        new[]{
+        //("int[]", "Length", ""),
+        //("List<int>", "Count", ""),
+        ("ReadOnlySpan<RegistryIndex>", "Length", ".Value"),
+        ("RegistryIndex[]", "Length", ".Value"),
+        ("List<RegistryIndex>", "Count", ".Value"),
+        ("IReadOnlyList<RegistryIndex>", "Count", ".Value"),
+        }) { #>
+        public <#=TConverted#>[] AssembleIndicesConverted(<#=listlike.ListType#> indexes)
+        {
+        <#=TConverted#>[] items = new <#=TConverted#>[indexes.<#=listlike.Length#>];
+        for(int i=0; i<indexes.<#=listlike.Length#>; i++)
+            items[i] = _convertedArray[indexes[i]<#=listlike.ValueGetter#>];
+        return items;
+        }
+<# } #>
+<# } #>
+        private static <#=typeName#> GetInstance()
+        {
+            if (_instance != null)
+                return _instance;
+            lock (_lock)
+            {
+                if (_instance == null)
+                    _instance = new <#=typeName#>();
+                return _instance;
+            }
+        }
+<# foreach((string ListType, string Length, string ValueGetter) listlike in 
+        new[]{
+        //("int[]", "Length", ""),
+        //("List<int>", "Count", ""),
+        ("ReadOnlySpan<RegistryIndex>", "Length", ".Value"),
+        ("RegistryIndex[]", "Length", ".Value"),
+        ("List<RegistryIndex>", "Count", ".Value"),
+        }) { #>
+        public <#=TName#>[] AssembleIndices(<#=listlike.ListType#> indexes)
+        {
+        <#=TName#>[] items = new <#=TName#>[indexes.<#=listlike.Length#>];
+        for(int i=0; i<indexes.<#=listlike.Length#>; i++)
+            items[i] = _currentArray[indexes[i]<#=listlike.ValueGetter#>];
+        return items;
+        }
+<# } #>
+        public <#=TName#> GetItem(RegistryIndex index) => _currentArray[index.Value];
+        public <#=TName#> this[RegistryIndex index]{ get=> _currentArray[index.Value]; }
+        public ReadOnlySpan<<#=TName#>> Snapshot() => new ReadOnlySpan<<#=TName#>>(_currentArray, 0, _registeredCount);
+        public RegistryIndex GetOrAdd(<#=TName#> item)
+        {
+            if (_allElements.TryGetValue(item, out int found))
+                return new RegistryIndex(found);
+            lock (_lock) //this implementation is slowish but should be bulletproof
+            { 
+                if (_allElements.TryGetValue(item, out int insideLock))
+                    return new RegistryIndex(insideLock);
+                int newElementIndex = AddToArrayInsideLock(item);
+                if (_allElements.TryAdd(item, newElementIndex))
+                    return new RegistryIndex(newElementIndex);
+                throw new Exception("Cannot add element to ConcurrentDictionary inside lock, this should newer happen, program should be terminated");
+            }
+
+            int AddToArrayInsideLock(<#=TName#> item)
+            {
+                int newElementIndex = _registeredCount;
+                if (newElementIndex >= _currentArray.Length)
+                {
+                    int newArraysSize = newElementIndex * 2;
+                    <#=TName#>[] newArray = new <#=TName#>[newArraysSize];
+                    Array.Copy(_currentArray, newArray, _currentArray.Length);
+                    _currentArray = newArray;
+<# if (enchanced) { #>
+                    <#=TConverted#>[] newConvertedArray = new <#=TConverted#>[newArraysSize];
+                    Array.Copy(_convertedArray, newConvertedArray, _convertedArray.Length);
+                    _convertedArray = newConvertedArray;
+                }
+                _currentArray[newElementIndex] = item;
+                _convertedArray[newElementIndex] = item.ConvertTo(out <#=TConverted#> _);
+<# } else { #>
+                }
+                _currentArray[newElementIndex] = item;
+<# } #>
+                _registeredCount++;
+                return newElementIndex;
+            }
+        }
+        protected <#=constructorName#>(int startingCapacity = 100)
+        {
+            _registeredCount = 0;
+            _currentArray = new <#=TName#>[startingCapacity];
+            _allElements = <#=dictionaryConstructor#>;
+<# if (enchanced) { #>            _convertedArray = new <#=TConverted#>[startingCapacity];<# } #>
+
+        }
+    }
+}

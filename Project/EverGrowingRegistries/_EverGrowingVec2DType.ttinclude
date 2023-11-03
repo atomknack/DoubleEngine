@@ -1,0 +1,15 @@
+﻿<# 
+string typeName = "EverGrowingVec2D";
+string constructorName = typeName;
+bool generic = false;
+bool enchanced = false;
+
+string additionalUsings = "using CollectionLike.Comparers.SetsWithCustomComparer;";
+string additionalMembers = "";
+
+string TName = "Vec2D";
+string TConverted = "";
+//bool canAddConverted = false;
+
+string dictionaryConstructor = "new(Vec2DComparer_2em5.ComparerInstance)";
+#>
