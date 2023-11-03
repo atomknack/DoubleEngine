@@ -3,7 +3,7 @@ My precious, if reading it code you don't understand what it does and it looks a
 This technology could possible:
 - Already be used in some games
 - Make process of creating games and generating worlds for them more easy
-- Add destructable elements to games and partial physics (this require coworking with read game engine developers)
+- Add destructable elements to games and partial physics (this require coworking with real game engine developers)
   ...
 
 ## Why I did not shared it earlier, even that I need help in developing it?
