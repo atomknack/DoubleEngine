@@ -14,3 +14,7 @@ But releasing this is really right way to do, especially if I go mad so badly th
 However, I don't want it to be just taken away so:
 
 ## licensed under GPL-3.0 license
+
+However parts that used for testing could contain parts of code from outside libraries,
+In such cases there are usually sepatate License file in such folder or notice in file, or both.
+There also some files linked to testing project, they will be in separate repository "TestingAddons"
