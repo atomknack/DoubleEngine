@@ -20,16 +20,16 @@ namespace DoubleEngine
         internal static bool IsEdgeIncreasing(int start, int end) =>
             start < end;
 
-        internal ref struct MultiMaterialEdges
+        public ref struct MultiMaterialEdges
         {
             private PooledSet<EdgeIndexed> _multiMaterialEdges;
-#if TESTING
-            internal EdgeIndexed[] TESTING_EdgesAsArray() => _multiMaterialEdges.ToArray();
-#endif
 
-            internal bool IsEdgeMultiMaterial(int start, int end)=>
+            public EdgeIndexed[] TESTING_EdgesAsArray() => _multiMaterialEdges.ToArray();
+
+
+            public bool IsEdgeMultiMaterial(int start, int end)=>
                 _multiMaterialEdges.Contains(CreateIncreasingEdge(start,end));
-            internal MultiMaterialEdges(ReadOnlySpan<IndexedTri> faces, ReadOnlySpan<MaterialByte> faceMaterials)
+            public MultiMaterialEdges(ReadOnlySpan<IndexedTri> faces, ReadOnlySpan<MaterialByte> faceMaterials)
             {
                 _multiMaterialEdges = Expendables.CreateSet<EdgeIndexed>(faces.Length * 3);
                 using var pooledDict = new PooledDictionary<EdgeIndexed, MaterialByte>(faces.Length * 3);

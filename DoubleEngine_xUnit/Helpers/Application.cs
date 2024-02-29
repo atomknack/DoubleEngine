@@ -9,6 +9,6 @@ namespace DoubleEngine_xUnit.Helpers
     public partial class Application
     {
         public static readonly string Path = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string XUnitTestCasesPath = "C:\\Projects\\DoubleEngine\\XUnitTestCasesData\\";
+        public static readonly string XUnitTestCasesPath = "C:\\GitHub\\DoubleEngine\\XUnitTestCasesData\\";
     }
 }

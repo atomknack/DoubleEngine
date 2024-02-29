@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Collections.Pooled;
 using System.Linq;
 using CollectionLike.Pooled;
+using VectorCore;
 
 namespace DoubleEngine
 {

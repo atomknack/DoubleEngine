@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DoubleEngine.Atom.Loaders
 {
-    internal static class VariableLengthEncoder
+    public static class VariableLengthEncoder
     {
 
         public static long DecodeVariableLengthPositiveLong(this Stream stream)//, Action<string> act)

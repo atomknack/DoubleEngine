@@ -3,6 +3,7 @@
 using CollectionLike;
 using CollectionLike.Enumerables;
 using DoubleEngine.Helpers;
+using VectorCore;
 using System;
 using System.Linq;
 

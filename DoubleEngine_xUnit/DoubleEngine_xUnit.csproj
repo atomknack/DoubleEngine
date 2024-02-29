@@ -33,7 +33,15 @@
 		</Compile>
 	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<Parent Include="..\..\TestingAddons\**\*.cs" />
+		<Compile Include="@(Parent)">
+			<Link>TestingAddons\%(Filename)%(Extension)</Link>
+		</Compile>
+	</ItemGroup>
+
+
+	<ItemGroup>
     <PackageReference Include="Collections.Pooled" Version="2.0.0-preview.27" />
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0-preview-20220707-01" />
@@ -50,8 +58,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DoubleEngine">
-      <HintPath>..\bin\Testing\netstandard2.1\DoubleEngine.dll</HintPath>
+    <Reference Include="DoubleEngine.CommonHelpers">
+      <HintPath>..\..\DoubleEngine.CommonHelpers\bin\Debug\netstandard2.1\DoubleEngine.CommonHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="DoubleEngine.UVectorCore">
+      <HintPath>..\..\DoubleEngine.UVectorCore\bin\Release\netstandard2.1\DoubleEngine.UVectorCore.dll</HintPath>
     </Reference>
     <Reference Include="Lzma2201">
       <HintPath>..\..\Lzma2201\Lzma2201\bin\Release\netstandard2.1\Lzma2201.dll</HintPath>
@@ -109,8 +120,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Project\DoubleEngine.csproj" />
     <ProjectReference Include="..\UHelpers\DoubleEngine.UHelpers.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Project\DoubleEngine.csproj" />
+	</ItemGroup>
 
 </Project>

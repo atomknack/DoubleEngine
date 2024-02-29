@@ -169,6 +169,8 @@
 		  <DependentUpon>EverGrowingVec3DVec3F.tt</DependentUpon>
 		</Compile>
 		<Compile Include="Helpers\Logger.cs" />
+		<Compile Include="TreeLike\SomeClassForTestIncludeCSProj.cs" />
+		<Compile Include="TreeLike\TreeLike3d.cs" />
 		<Compile Include="VectorArray\VectorArray_V2V3V4_TS.gen.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -444,12 +446,15 @@
 	<ItemGroup>
 	  <Reference Include="DoubleEngine.CommonHelpers">
 	    <HintPath>..\..\DoubleEngine.CommonHelpers\bin\Release\netstandard2.1\DoubleEngine.CommonHelpers.dll</HintPath>
+	    <EmbedInteropTypes>False</EmbedInteropTypes>
 	  </Reference>
 	  <Reference Include="DoubleEngine.UVectorCore">
 	    <HintPath>..\..\DoubleEngine.UVectorCore\bin\Release\netstandard2.1\DoubleEngine.UVectorCore.dll</HintPath>
+	    <EmbedInteropTypes>False</EmbedInteropTypes>
 	  </Reference>
 	  <Reference Include="Lzma2201">
 	    <HintPath>..\..\Lzma2201\Lzma2201\bin\Release\netstandard2.1\Lzma2201.dll</HintPath>
+	    <EmbedInteropTypes>False</EmbedInteropTypes>
 	  </Reference>
 	</ItemGroup>
 	<ItemGroup>

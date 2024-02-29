@@ -62,14 +62,14 @@ public class OuputInfoForTestsAssembly
     }
 
     [Fact]
-        public void DoubleEngine_TestBuildInfo()
+        public void DoubleEngine_Vector_TestBuildInfo()
         {
-        var doubleEngineAssembly = Assembly.GetAssembly(typeof(DoubleEngine.Vec3D));
-        var compileDate = doubleEngineAssembly?.Location;
+        var doubleEngine_Vector_Assembly = Assembly.GetAssembly(typeof(VectorCore.Vec3D));
+        var compileDate = doubleEngine_Vector_Assembly?.Location;
         //_output.WriteLine($"{RetrieveLinkerTimestamp(compileDate)} - DoubleEngine compile date");
         _output.WriteLine($"{File.GetLastWriteTime(compileDate)} - DoubleEngine last Testing build date");
         //File.GetCreationTime(Assembly.GetExecutingAssembly().Location)
-        _output.WriteLine($"{doubleEngineAssembly.GetName().Version} - DoubleEngine version");
+        _output.WriteLine($"{doubleEngine_Vector_Assembly.GetName().Version} - DoubleEngine version");
         //Assert.SkipIf(skip);
         //"aatbc".Should().ContainEquivalentOf("aTb");
     }

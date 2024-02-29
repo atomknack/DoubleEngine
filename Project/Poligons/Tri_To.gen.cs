@@ -6,6 +6,7 @@
 // </auto-generated>
 //----------------------------------------------------------------------------------------
 
+using VectorCore;
 using System.Collections;
 using System.Collections.Generic;
 

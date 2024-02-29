@@ -20,7 +20,7 @@ namespace DoubleEngine_xUnit.Expendables_Tests
         {
             var path = Helpers.Application.XUnitTestCasesPath + "ColoredMeshes\\" + fileNameShort;
             IMeshFragmentWithMaterials<Vec3D> mesh = JsonHelpers.LoadFromJsonFile<MeshFragmentVec3DWithMaterials>(path + ".mesh3d12");
-            var normals = Expendables.CreateFaceNormalsFromMeshFragment3D(mesh);
+            var normals = ExpendablesDoubleEngineSpecific.CreateFaceNormalsFromMeshFragment3D(mesh);
             normals.Count.Should().Be(mesh.Faces.Length);
             Vec3D[] expected = JsonHelpers.LoadFromJsonFile<Vec3D[]>(path + "_FacesNormals.normalsJson");
             normals.Should().Equal(expected);

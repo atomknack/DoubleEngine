@@ -15,20 +15,20 @@ namespace DoubleEngine_xUnit.TestingInternal
         {
             MeshFragmentVec3D v = MeshFragmentVec3D.Empty;
             Assert.NotNull(v);
-            Assert.NotNull(v.vertices);
-            Assert.EmptyArray(v.vertices);
-            Assert.NotNull(v.triangles);
-            Assert.EmptyArray(v.triangles);
+            Assert.NotNull(v.Vertices.ToArray());
+            Assert.EmptyArray(v.Vertices.ToArray());
+            Assert.NotNull(v.Triangles.ToArray());
+            Assert.EmptyArray(v.Triangles.ToArray());
         }
         [Fact]
         internal static void EmptyMeshFragmentVec2D()
         {
             MeshFragmentVec2D v = MeshFragmentVec2D.Empty;
             Assert.NotNull(v);
-            Assert.NotNull(v.vertices);
-            Assert.EmptyArray(v.vertices);
-            Assert.NotNull(v.triangles);
-            Assert.EmptyArray(v.triangles);
+            Assert.NotNull(v.Vertices.ToArray());
+            Assert.EmptyArray(v.Vertices.ToArray());
+            Assert.NotNull(v.Triangles.ToArray());
+            Assert.EmptyArray(v.Triangles.ToArray());
         }
         [Fact]
         internal static void EmptyIndexedEdgePoly()
@@ -45,12 +45,12 @@ namespace DoubleEngine_xUnit.TestingInternal
         {
             IndexedPolyVec2D v = IndexedPolyVec2D.Empty;
             Assert.NotNull(v);
-            Assert.NotNull(v._vertices);
-            Assert.EmptyArray(v._vertices);
-            Assert.NotNull(v._slivers);
-            Assert.EmptyArray(v._slivers);
-            Assert.NotNull(v._iEPoly);
-            Assert.True(v._iEPoly == IndexedEdgePoly.Empty);
+            Assert.NotNull(v.GetVertices().ToArray());
+            Assert.EmptyArray(v.GetVertices().ToArray());
+            Assert.NotNull(v.GetSlivers().ToArray());
+            Assert.EmptyArray(v.GetSlivers().ToArray());
+            Assert.NotNull(v.GetIndexedEdgePoly());
+            Assert.True(v.GetIndexedEdgePoly() == IndexedEdgePoly.Empty);
         }
     }
 }
